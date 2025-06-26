@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Sistema</title>
+    <style>
+        /* Reset de estilos padrão do navegador */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Estilo do corpo da página - Degradê de amarelo para preto */
+        body {
+            background: linear-gradient(135deg, #FFD700, #000000);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Container principal do formulário */
+        .login-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        /* Título do formulário */
+        .login-container h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+            position: relative;
+        }
+
+        .login-container h1::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #FFD700, #000000);
+            margin: 10px auto;
+            border-radius: 2px;
+        }
+
+        /* Estilização dos grupos de input */
+        .input-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            border-color: #FFD700;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
+        }
+
+        /* Estilização do botão de login */
+        .login-button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(90deg, #FFD700, #FFA500);
+            border: none;
+            border-radius: 6px;
+            color: #000;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .login-button:hover {
+            background: linear-gradient(90deg, #FFA500, #FF8C00);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Mensagem de feedback */
+        .message {
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 20px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .message.error {
+            background-color: #ffebee;
+            color: #f44336;
+            display: block;
+        }
+
+        .message.success {
+            background-color: #e8f5e9;
+            color: #4caf50;
+            display: block;
+        }
+
+        /* Rodapé do formulário */
+        .footer {
+            margin-top: 25px;
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* Efeitos responsivos */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 20px;
+            }
+            
+            .login-container h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>ACESSO AO SISTEMA</h1>
+        <form id="loginForm">
+            <div class="input-group">
+                <label for="username">Usuário:</label>
+                <input type="text" id="username" name="username" placeholder="Digite seu usuário" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Senha:</label>
+                <input type="password" id="password" name="password" placeholder="Digite sua senha" required>
+            </div>
+            <button type="submit" class="login-button">ENTRAR</button>
+            <div id="message" class="message"></div>
+        </form>
+        <div class="footer">
+            Credenciais: admin / 123@456
+        </div>
+    </div>
+
+    <script>
+        // Aguarda o carregamento completo da página
+        document.addEventListener('DOMContentLoaded', function() {
+            // Obtém referências aos elementos do formulário
+            const loginForm = document.getElementById('loginForm');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const messageDiv = document.getElementById('message');
+            
+            // Adiciona um listener para o evento de envio do formulário
+            loginForm.addEventListener('submit', function(event) {
+                // Previne o comportamento padrão de recarregar a página
+                event.preventDefault();
+                
+                // Obtém os valores dos campos de entrada
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value;
+                
+                // Verifica as credenciais
+                if (username === 'admin' && password === '123@456') {
+                    // Credenciais corretas
+                    showMessage('Login realizado com sucesso!', 'success');
+                    
+                    // Limpa os campos do formulário
+                    loginForm.reset();
+                    
+                    // Simula um redirecionamento após login bem-sucedido
+                    setTimeout(function() {
+                        showMessage('Redirecionando para o painel...', 'success');
+                    }, 1500);
+                } else {
+                    // Credenciais incorretas
+                    showMessage('Usuário ou senha incorretos!', 'error');
+                    
+                    // Limpa o campo de senha
+                    passwordInput.value = '';
+                    
+                    // Coloca o foco no campo de senha
+                    passwordInput.focus();
+                }
+            });
+            
+            // Função para exibir mensagens de feedback
+            function showMessage(text, type) {
+                messageDiv.textContent = text;
+                messageDiv.className = 'message'; // Reseta as classes
+                messageDiv.classList.add(type); // Adiciona a classe do tipo (success/error)
+            }
+        });
+    </script>
+</body>
+</html>
